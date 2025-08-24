@@ -1560,3 +1560,556 @@ void AddInputToBinder(const std::string& key, Uint8 button, EKeyAction action)
 ```
 
 ^cc72ca
+
+---
+### CCollisionManager
+```cpp
+class CCollisionManager
+{
+private:
+	CCollisionManager();
+	~CCollisionManager();
+	
+private:
+	static CCollisionManager* mInst;
+	
+	std::unordered_map<std::string, FCollisionProfile*>	mProfileMap;
+	
+public:
+	bool Init();
+	
+	bool CreateProfile(const std::string& name, 
+		ECollision::Channel myChannel, ECollision::Interaction interaction);
+	
+	bool SetCollisionInteraction(const std::string& name,
+		ECollision::Channel otherChannel, ECollision::Interaction interaction);
+	
+	FCollisionProfile* FindProfile(const std::string& name);
+	
+public:
+	bool AABBCollision(CBoxCollider* collider1, CBoxCollider* collider2);
+	bool CircleCircleCollision(CCircleCollider* collider1, CCircleCollider* collider2);
+	bool AABBCircleCollision(CBoxCollider* collider1, CCircleCollider* collider2);
+	bool AABBPointCollision(CBoxCollider* collider, const FVector2D& point);
+	bool CirclePointCollision(CCircleCollider* collider, const FVector2D& point);
+	
+	bool AABBPointCollision(const SDL_Rect& rect, const FVector2D& point);
+	
+public:
+	static CCollisionManager* GetInst();
+	static void DestroyInst();
+};
+```
+
+^f68f25
+
+```cpp
+bool CCollisionManager::AABBCollision(CBoxCollider* collider1, CBoxCollider* collider2)
+{
+	const SDL_FRect& box1 = collider1->GetRect();
+	const SDL_FRect& box2 = collider2->GetRect();
+	
+	if (box1.x + box1.w < box2.x ||
+		box1.x > box2.x + box2.w ||
+		box1.y + box1.h < box2.y ||
+		box1.y > box2.y + box2.h)
+	{
+		return false;
+	}
+	
+	FVector2D hitPoint;
+	hitPoint.x = (std::max(box1.x, box2.x) + std::min(box1.x + box1.w, box2.x + box2.w)) * 0.5f;
+	hitPoint.y = (std::max(box1.y, box2.y) + std::min(box1.y + box1.h, box2.y + box2.h)) * 0.5f;
+	
+	collider1->mHitPoint = hitPoint;
+	collider2->mHitPoint = hitPoint;
+	
+	return true;
+}
+```
+
+^fb1690
+
+```cpp
+bool CCollisionManager::CircleCircleCollision(CCircleCollider* collider1, CCircleCollider* collider2)
+{
+	const FCircle& circle1 = collider1->GetCircle();
+	const FCircle& circle2 = collider2->GetCircle();
+	
+	float distance  = circle1.center.Distance(circle2.center);
+	float sumRadius = circle1.radius + circle2.radius;
+	
+	if (distance > sumRadius)
+	{
+		return false;
+	}
+	
+	FVector2D hitPoint = (circle1.center + circle2.center) * 0.5f;
+	
+	collider1->mHitPoint = hitPoint;
+	collider2->mHitPoint = hitPoint;
+	
+	return true;
+}
+```
+
+^0855e2
+
+```cpp
+bool CCollisionManager::AABBCircleCollision(CBoxCollider* collider1, CCircleCollider* collider2)
+{
+	const SDL_FRect& box  = collider1->GetRect();
+	const FCircle& circle = collider2->GetCircle();
+	
+	FVector2D closestPointOnBox = circle.center.Clamp(box.x, box.x + box.w, box.y + box.h, box.y);
+	
+	float distance = circle.center.Distance(closestPointOnBox);
+	
+	if (circle.radius < distance)
+	{
+		return false;
+	}
+	
+	FVector2D hitPoint = closestPointOnBox;
+	
+	collider1->mHitPoint = hitPoint;
+	collider2->mHitPoint = hitPoint;
+	
+	return true;
+}
+```
+
+^c34b99
+
+---
+### CSceneCollision
+```cpp
+class CSceneCollision
+{
+	friend class CScene;
+	
+public:
+	CSceneCollision() = delete;
+	CSceneCollision(CCamera* camera);
+	~CSceneCollision();
+	
+private:
+	CQuadTree* mQuadTree;
+	std::unordered_map<FColliderPair, EPair::Status> mPairs;
+	
+public:
+	void Update(float deltaTime);
+	void LateUpdate(float deltaTime);
+	
+public:
+	void AddCollider(CCollider* collider);
+	void HandleCollision(CCollider* collider1, CCollider* collider2);
+	
+private:
+	void CleanPairs();
+};
+```
+
+^9b935a
+
+```cpp
+void CSceneCollision::HandleCollision(CCollider* collider1, CCollider* collider2)
+{
+	FColliderPair  pair = { collider1, collider2 };
+	EPair::Status& status = mPairs[pair];
+	
+	if (status == EPair::DNE)
+		status = EPair::NOT_COLLIDED;
+	
+	if (collider1->Intersect(collider2))
+	{
+		if (status == EPair::NOT_COLLIDED)
+		{
+			collider1->OnCollisionEnter(collider2);
+			collider2->OnCollisionEnter(collider1);
+			
+			status = EPair::COLLIDED;
+		}
+		else
+		{
+			collider1->OnCollisionStay(collider2);
+			collider2->OnCollisionStay(collider1);
+			
+			CPhysicsManager::GetInst()->ResolveOverlapIfPushable(collider1, collider2);
+		}
+	}
+	else
+	{
+		if (status == EPair::COLLIDED)
+		{
+			collider1->OnCollisionExit(collider2);
+			collider2->OnCollisionExit(collider1);
+		}
+		mPairs.erase(pair);
+	}
+}
+```
+
+^d34e98
+
+```cpp
+void CSceneCollision::CleanPairs()
+{
+	std::unordered_map<FColliderPair, EPair::Status>::iterator iter = mPairs.begin();
+	std::unordered_map<FColliderPair, EPair::Status>::iterator iterEnd = mPairs.end();
+	
+	while (iter != iterEnd)
+	{
+		CCollider* collider1 = iter->first.collider1;
+		CCollider* collider2 = iter->first.collider2;
+		const EPair::Status& status = iter->second;
+		
+		if (!collider1->GetActive() || !collider2->GetActive())
+		{
+			if (status == EPair::COLLIDED)
+			{
+				collider1->OnCollisionExit(collider2);
+				collider2->OnCollisionExit(collider1);
+			}
+			iter = mPairs.erase(iter);
+			continue;
+		}
+		iter++;
+	}
+}
+```
+
+^fa3f6c
+
+---
+### CQuadTree
+```cpp
+class CQuadTree
+{
+	friend class CSceneCollision;
+	
+private:
+	CQuadTree() = delete;
+	CQuadTree(CCamera* camera);
+	~CQuadTree();
+	
+private:
+	CQTNode* mRoot = nullptr;
+	std::vector<CCollider*> mColliders;
+	
+public:
+	void Update(float deltaTime);
+	void LateUpdate(float deltaTime);
+	
+public:
+	void AddCollider(CCollider* collider);
+	
+private:
+	void UpdateBoundary();
+};
+```
+
+^3cceff
+
+```cpp
+CQuadTree::CQuadTree(CCamera* camera) :
+	mRoot(nullptr)
+{
+	int totalNodes = (int)((pow(4, MAX_SPLIT + 1) - 1) / 3);
+	CMemoryPoolManager::GetInst()->CreatePool<CQTNode>(totalNodes);
+
+	if (!mRoot)
+		mRoot = CMemoryPoolManager::GetInst()->Allocate<CQTNode>();
+
+	mRoot->mCamera = camera;
+}
+```
+
+^033b8a
+
+```cpp
+void CQuadTree::Update(float deltaTime)
+{
+	UpdateBoundary();
+	
+	for (size_t i = mColliders.size(); i > 0; i--)
+	{
+		CCollider* collider = mColliders[i - 1];
+		
+		if (!collider->GetActive())
+		{
+			std::swap(mColliders[i - 1], mColliders.back());
+			mColliders.pop_back();
+			
+			continue;
+		}
+		else if (!collider->GetEnable())
+		{
+			continue;
+		}
+		mRoot->AddCollider(collider);
+	}
+	mRoot->Update(deltaTime);
+}
+```
+
+^860dd5
+
+---
+### CQTNode
+```cpp
+class CQTNode
+{
+	friend class CQuadTree;
+	
+public:
+	CQTNode();
+	~CQTNode();
+	
+private:
+	CCamera* mCamera;
+	
+	CQTNode* mParent;
+	CQTNode* mChilds[4];
+	std::vector<CCollider*> mColliders;
+	
+	SDL_FRect mBoundary;
+	
+	int mSplitLevel = 0;
+	
+public:
+	void Update(float deltaTime);
+	void Render(SDL_Renderer* renderer);
+	
+public:
+	bool HasChild();
+	bool ShouldSplit();
+	void Split();
+	
+	bool IsWithinNode(CCollider* collider);
+	void AddCollider(CCollider* collider);
+	
+	void MoveCollidersToChildren();
+	
+	void Clear();
+};
+```
+
+^3f6061
+
+```cpp
+void CQTNode::Update(float deltaTime)
+{
+	if (HasChild())
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			mChilds[i]->Update(deltaTime);
+		}
+	}
+	else
+	{
+		size_t size = mColliders.size();
+		if (size >= 2)
+		{
+			CSceneCollision* sceneCollision = CSceneManager::GetInst()->GetCurrentScene()->GetCollision();
+			
+			for (size_t i = 0; i < size; i++)
+			{
+				for (size_t j = i + 1; j < size; j++)
+				{
+					FCollisionProfile* profile1 = mColliders[i]->GetProfile();
+					FCollisionProfile* profile2 = mColliders[j]->GetProfile();
+					
+					if (profile1->collisionResponses[profile2->channel] == ECollision::Interaction::IGNORE ||
+						profile2->collisionResponses[profile1->channel] == ECollision::Interaction::IGNORE)
+					{
+						continue;
+					}
+					sceneCollision->HandleCollision(mColliders[i], mColliders[j]);
+				}
+			}
+		}
+	}
+}
+```
+
+^03c03d
+
+```cpp
+void CQTNode::AddCollider(CCollider* collider)
+{
+	if (!IsWithinNode(collider))
+		return;
+		
+	if (HasChild())
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (mChilds[i]->IsWithinNode(collider))
+			{
+				mChilds[i]->AddCollider(collider);
+			}
+		}
+	}
+	else
+	{
+		mColliders.emplace_back(collider);
+		
+		if (ShouldSplit())
+		{
+			Split();
+			
+			MoveCollidersToChildren();
+		}
+	}
+}
+```
+
+^b0d555
+
+---
+### CPhysicsManager
+```cpp
+class CPhysicsManager
+{
+	friend class CScene;
+	
+private:
+	CPhysicsManager();
+	~CPhysicsManager();
+	
+private:
+	static CPhysicsManager* mInst;
+	
+	const float CONST_MinMtvLSq = 0.5f;
+	
+public:
+	void ResolveOverlapIfPushable(CCollider* collider1, CCollider* collider2);
+	
+private:
+	void ResolveOverlap(CCollider* collider1, CCollider* collider2, bool pushObj1, bool pushObj2);
+	
+	void ResolveAABBOverlap(CBoxCollider* collider1, CBoxCollider* collider2, bool pushObj1, bool pushObj2);
+	void ResolveCircleCircleOverlap(CCircleCollider* collider1, CCircleCollider* collider2, bool pushObj1, bool pushObj2);
+	void ResolveAABBCircleOverlap(CBoxCollider* collider1, CCircleCollider* collider2, bool pushObj1, bool pushObj2);
+	
+	void MoveBy(CCollider* collider, const FVector2D& mtv);
+	
+public:
+	static CPhysicsManager* GetInst();
+	static void DestroyInst();
+};
+```
+
+^6ed2ab
+
+```cpp
+void CPhysicsManager::ResolveOverlapIfPushable(CCollider* collider1, CCollider* collider2)
+{
+	FCollisionProfile* profile1 = collider1->GetProfile();
+	FCollisionProfile* profile2 = collider2->GetProfile();
+	
+	ECollision::Interaction response1to2 = profile1->collisionResponses[profile2->channel];
+	ECollision::Interaction response2to1 = profile2->collisionResponses[profile1->channel];
+	
+	CRigidbody* rb1 = nullptr;
+	CRigidbody* rb2 = nullptr;
+	
+	if (response1to2 == ECollision::Interaction::BLOCK)
+		rb1 = collider1->GetObject()->GetComponent<CRigidbody>();
+	
+	if (response2to1 == ECollision::Interaction::BLOCK)
+		rb2 = collider2->GetObject()->GetComponent<CRigidbody>();
+	
+	bool pushObj1 = rb1 != nullptr && rb1->GetType() == ERigidbodyType::DYNAMIC;
+	bool pushObj2 = rb2 != nullptr && rb2->GetType() == ERigidbodyType::DYNAMIC;
+	
+	if (!pushObj1 && !pushObj2)
+		return;
+	
+	ResolveOverlap(collider1, collider2, pushObj1, pushObj2);
+}
+```
+
+^fba119
+
+---
+### CRigidbody
+```cpp
+class CRigidbody : public CComponent
+{
+public:
+	CRigidbody();
+	virtual ~CRigidbody();
+	
+private:
+	ERigidbodyType mType;
+	
+	float mMass;
+	float mGravityScale;
+	
+	FVector2D mVelocity;
+	FVector2D mAcceleration;
+	FVector2D mAccumulatedForce;
+	
+private:
+	virtual void Update(float deltaTime) final;
+	virtual void Release() final;
+	
+public:
+	void AddForce(const FVector2D& force);
+	void AddImpulse(const FVector2D& impulse);
+	
+	const FVector2D& GetVelocity() const { return mVelocity; }
+	ERigidbodyType GetType() const { return mType; }
+	float GetMass() const { return mMass; }
+	
+	void SetVelocity(const FVector2D& velocity)
+	{
+		mVelocity = velocity;
+	}
+	void SetType(ERigidbodyType type)
+	{
+		mType = type;
+	}
+	void SetMass(float mass)
+	{ 
+		mMass = mass;
+	}
+	
+private:
+	void ApplyGravity();
+	void ApplyForces();
+	void ApplyAcceleration(float deltaTime);
+	void ApplyDrag(float deltaTime);
+	void UpdateObjectPos(float deltaTime);
+	void ClearForces();
+};
+```
+
+^77c587
+
+```cpp
+void CRigidbody::Update(float deltaTime)
+{
+	CComponent::Update(deltaTime);
+	
+	if (mType == ERigidbodyType::STATIC || mMass <= 0.0f)
+		return;
+	
+	ApplyGravity();
+	
+	ApplyForces();
+	
+	ApplyAcceleration(deltaTime);
+	
+	ApplyDrag(deltaTime);
+	
+	UpdateObjectPos(deltaTime);
+	
+	ClearForces();
+}
+```
+
+^a4c1df
