@@ -54,7 +54,8 @@ draft: false
 	- 연관된 컴포넌트: `CSpriteComponent`, `CVFXComponent`
 6. **[[06_충돌 및 물리 시스템 구조|충돌 및 물리 시스템 구조]]**
 	- 연관된 컴포넌트: `CBoxCollider`, `CCircleCollider`, `CRigidbody`
-7. **위젯 시스템의 설계와 동작 구조** (문서 작성중)
+7. **[[07_1_위젯 시스템 구조|위젯 시스템 구조]]**
+	- 연관된 컴포넌트: `CWidgetComponent`
 	- **[[07_2_기본 제공 위젯 구성|기본 제공 위젯 구성]]**
 
 ---

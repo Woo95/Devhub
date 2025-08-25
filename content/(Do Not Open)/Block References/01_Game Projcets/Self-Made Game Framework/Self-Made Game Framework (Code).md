@@ -3,7 +3,6 @@
 ## Eng & Kor
 
 ### CAssetManager
-
 ```cpp
 template <typename T>
 T* PlacementNew(void*& memoryBlock)
@@ -40,7 +39,7 @@ CAssetManager* CAssetManager::GetInst()
             + sizeof(CTextureManager)   + sizeof(CSpriteManager)
             + sizeof(CAnimationManager) + sizeof(CUIManager)
             + sizeof(CFontManager)      + sizeof(CSoundManager);
-
+		
         void* memoryBlock = malloc(totalSize);
         mInst = new (memoryBlock) CAssetManager((char*)memoryBlock + sizeof(CAssetManager));
     }
@@ -51,7 +50,6 @@ CAssetManager* CAssetManager::GetInst()
 ^a4b1a3
 
 ---
-
 ### CSceneManager
 ```cpp
 void CSceneManager::ChangeRequest(ETransition transition, ESceneState state)
@@ -68,7 +66,7 @@ void CSceneManager::Update(float deltaTime)
 {
 	if (mPending.transition != ETransition::NONE)
 		ChangeApply();
-		
+	
 	mScenes.back()->Update(deltaTime);
 }
 ```
@@ -205,7 +203,7 @@ class CScene abstract
 protected:
 	CScene();
 	virtual ~CScene();
-
+	
 protected:
 	std::vector<std::shared_ptr<class CTexture>> mTextures;
     std::vector<std::shared_ptr<class CFont>> mFonts;
@@ -266,18 +264,18 @@ public:
 class CScene abstract
 {
 	friend class CSceneManager;
-
+	
 protected:
 	CScene();
 	virtual ~CScene();
-
+	
 protected:
     std::vector<CLayer*> mLayers;
-
+	
 protected:
 	virtual bool Enter() = 0;
 	virtual bool Exit()  = 0;
-	    
+	
     virtual void Update(float deltaTime);
     virtual void LateUpdate(float deltaTime);
     virtual void Render(SDL_Renderer* renderer);
@@ -320,13 +318,13 @@ void CScene::Update(float deltaTime)
 {
     for (CLayer* layer : mLayers)
         layer->Update(deltaTime);
-        
+    
     if (mSceneCollision)
         mSceneCollision->Update(deltaTime);
-        
+    
     if (mCamera)
         mCamera->Update(deltaTime);
-        
+    
     if (mSceneUI)
         mSceneUI->Update(deltaTime);
 }
@@ -339,10 +337,10 @@ void CScene::LateUpdate(float deltaTime)
 {
     for (CLayer* layer : mLayers)
         layer->LateUpdate(deltaTime);
-        
+    
     if (mSceneCollision)
 	    mSceneCollision->LateUpdate(deltaTime);
-	    
+	
     if (mSceneUI)
         mSceneUI->LateUpdate(deltaTime);
 }
@@ -355,7 +353,7 @@ void CScene::Render(SDL_Renderer* renderer)
 {
     for (CLayer* layer : mLayers)
         layer->Render(renderer);
-
+	
     if (mSceneUI)
         mSceneUI->Render(renderer);
 }
@@ -369,7 +367,7 @@ T* InstantiateObject(const std::string& name, ELayer::Type type)
 {
 	if (!CMemoryPoolManager::GetInst()->HasPool<T>())
 		CMemoryPoolManager::GetInst()->CreatePool<T>(initialCapacity);
-		
+	
 	T* obj = CMemoryPoolManager::GetInst()->Allocate<T>();
 	obj->SetName(name);
 	obj->mScene = this;
@@ -389,13 +387,12 @@ T* InstantiateObject(const std::string& name, ELayer::Type type)
 ^144420
 
 ---
-
 ### CLayer
 ```cpp
 class CLayer
 {
 	friend class CScene;
-
+	
 public:
 	CLayer();
 	~CLayer();
@@ -439,7 +436,6 @@ void CLayer::Update(float deltaTime)
         if (!obj->GetActive())
         {
             obj->Destroy();
-            
             continue;
         }
         else if (!obj->GetEnable())
@@ -459,14 +455,13 @@ void CLayer::LateUpdate(float deltaTime)
     for (size_t i = mObjects.size(); i > 0; i--)
     {
         CObject* obj = mObjects[i - 1];
-
+		
         if (!obj->GetActive())
         {
             std::swap(mObjects[i - 1], mObjects.back());
             mObjects.pop_back();
             
             obj->Release();
-            
             continue;
         }
         else if (!obj->GetEnable())
@@ -500,7 +495,6 @@ void CLayer::Render(SDL_Renderer* renderer)
 ^549045
 
 ---
-
 ### CObject
 ```cpp
 class CObject abstract : public CEntityBase
@@ -612,7 +606,7 @@ T* AllocateComponent(const std::string& name)
 {
 	if (!CMemoryPoolManager::GetInst()->HasPool<T>())
 		CMemoryPoolManager::GetInst()->CreatePool<T>(initialCapacity);
-		
+	
 	T* component = CMemoryPoolManager::GetInst()->Allocate<T>();
 	component->SetName(name);
 	
@@ -623,7 +617,6 @@ T* AllocateComponent(const std::string& name)
 ^ab3424
 
 ---
-
 ### CComponent
 ```cpp
 class CComponent : public CEntityBase
@@ -744,7 +737,6 @@ void CComponent::LateUpdate(float deltaTime)
 			mTransform->GetChilds().pop_back();
 			
 			child->Release();
-			
 			continue;
 		}
 		else if (!child->GetEnable())
@@ -765,7 +757,7 @@ void CComponent::Render(SDL_Renderer* renderer)
 	{
 		if (!child->GetActive() || !child->GetEnable())
 			continue;
-			
+		
 		child->Render(renderer);
 	}
 }
@@ -1084,7 +1076,7 @@ void CVFXComponent::Update(float deltaTime)
 	
 	if (!mPlayVFX || !mAnimation)
 		return;
-		
+	
 	mAnimation->Update(deltaTime);
 	
 	if (mAnimation->GetLooped())
@@ -1142,7 +1134,7 @@ void CVFXComponent::PlayVFX(const FVector2D& pos)
 {
 	if (mPlayVFX || !mAnimation)
 		return;
-		
+	
 	mPlayVFX = true;
 	
 	mTransform->SetWorldPos(pos);
@@ -1193,7 +1185,7 @@ struct FBinder
 {
 	std::vector<std::pair<SDL_Scancode, EKeyAction>> Keys;
 	std::vector<std::pair<Uint8, EKeyAction>> Mouses;
-
+	
 	std::vector<FBindFunction*> Functions;
 };
 ```
@@ -1207,35 +1199,35 @@ struct FBinder
 class CInputManager
 {
 	friend class CGameManager;
-
+	
 private:
 	CInputManager();
 	~CInputManager();
-
+	
 private:
 	static CInputManager* mInst;
-
+	
 	// for keyboard
 	std::unordered_map<SDL_Scancode, FKeyState> mKeys;
-
+	
 	// for mouse
 	std::unordered_map<Uint8, FKeyState> mMouses;
 	FVector2D mMousePos = FVector2D::ZERO;
-
+	
 private:
 	bool Init();
 	bool RegisterKey(SDL_Scancode keyCode);
 	bool RegisterMouse(Uint8 button);
-
+	
 	void Update();
 	void UpdateInputState();
 	void HandleInputState(bool& press, bool& hold, bool& release, bool isPressed);
-
+	
 public:
 	bool GetKeyState(SDL_Scancode keyCode, EKeyAction action);
 	bool GetMouseButtonState(Uint8 button, EKeyAction action);
 	const FVector2D& GetMousePos() const { return mMousePos; }
-
+	
 public:
 	static CInputManager* GetInst()
 	{
@@ -1243,7 +1235,7 @@ public:
 			mInst = new CInputManager;
 		return mInst;
 	}
-
+	
 	static void DestroyInst()
 	{
 		SAFE_DELETE(mInst);
@@ -1258,10 +1250,10 @@ bool CInputManager::RegisterKey(SDL_Scancode keyCode)
 {
 	if (mKeys.find(keyCode) != mKeys.end())
 		return false;
-
+	
 	FKeyState state;
 	mKeys[keyCode] = state;
-
+	
 	return true;
 }
 ```
@@ -1273,10 +1265,10 @@ bool CInputManager::RegisterMouse(Uint8 button)
 {
 	if (mMouses.find(button) != mMouses.end())
 		return false;
-
+	
 	FKeyState state;
 	mMouses[button] = state;
-
+	
 	return true;
 }
 ```
@@ -1289,34 +1281,34 @@ void CInputManager::UpdateInputState()
 	// FOR KEYBOARD //
 	{
 		const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
-
+		
 		std::unordered_map<SDL_Scancode, FKeyState>::iterator iter = mKeys.begin();
 		std::unordered_map<SDL_Scancode, FKeyState>::iterator iterEnd = mKeys.end();
-
+		
 		for (; iter != iterEnd; iter++)
 		{
 			bool isPressed = keyboardState[iter->first];
 			FKeyState& key = iter->second;
-
+			
 			HandleInputState(key.Press, key.Hold, key.Release, isPressed);
 		}
 	}
-
+	
 	// FOR MOUSE //
 	{
 		int mouseX, mouseY;
 		Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
-
+		
 		mMousePos = { (float)mouseX, (float)mouseY };
-
+		
 		std::unordered_map<Uint8, FKeyState>::iterator iter = mMouses.begin();
 		std::unordered_map<Uint8, FKeyState>::iterator iterEnd = mMouses.end();
-
+		
 		for (; iter != iterEnd; iter++)
 		{
 			bool isPressed = mouseState & SDL_BUTTON(iter->first);
 			FKeyState& mouse = iter->second;
-
+			
 			HandleInputState(mouse.Press, mouse.Hold, mouse.Release, isPressed);
 		}
 	}
@@ -1400,21 +1392,21 @@ class CInputComponent : public CComponent
 public:
 	CInputComponent();
 	virtual ~CInputComponent();
-
+	
 private:
 	std::unordered_map<std::string, FBinder*> mBinders;
-
+	
 private:
 	virtual void Update(float deltaTime) final;
 	virtual void Release() final;
-
+	
 public:
 	template <typename T>
 	void AddFuncToBinder(const std::string& key, T* obj, void(T::* func)());
 	void AddFuncToBinder(const std::string& key, void* obj, const std::function<void()>& func);
-
+	
 	void DeleteFuncFromBinder(const std::string& key, void* obj);
-
+	
 	void AddInputToBinder(const std::string& key, SDL_Scancode keyCode, EKeyAction action);
 	void AddInputToBinder(const std::string& key, Uint8 button, EKeyAction action);
 };
@@ -1426,47 +1418,47 @@ public:
 void CInputComponent::Update(float deltaTime)
 {
 	CComponent::Update(deltaTime);
-
+	
 	std::unordered_map<std::string, FBinder*>::iterator iter = mBinders.begin();
 	std::unordered_map<std::string, FBinder*>::iterator iterEnd = mBinders.end();
-
+	
 	for (; iter != iterEnd; iter++)
 	{
 		FBinder* binder = iter->second;
 		if (binder->Keys.empty() && binder->Mouses.empty())
 			continue;
-
+		
 		bool match = true;
-
+		
 		// KEYBOARD //
 		for (const auto& binderKey : binder->Keys)
 		{
 			const SDL_Scancode& key = binderKey.first;
 			const EKeyAction& action = binderKey.second;
-
+			
 			if (!CInputManager::GetInst()->GetKeyState(key, action))
 			{
 				match = false;
 				break;
 			}
 		}
-
+		
 		if (!match)
 			continue;
-
+		
 		// MOUSE //
 		for (const auto& binderMouse : binder->Mouses)
 		{
 			const Uint8& mouse = binderMouse.first;
 			const EKeyAction& action = binderMouse.second;
-
+			
 			if (!CInputManager::GetInst()->GetMouseButtonState(mouse, action))
 			{
 				match = false;
 				break;
 			}
 		}
-
+		
 		if (match)
 		{
 			for (FBindFunction* bindFunc : binder->Functions)
@@ -1483,18 +1475,18 @@ void CInputComponent::Update(float deltaTime)
 void CInputComponent::AddFunctionToBinder(const std::string& key, void* obj, const std::function<void()>& func)
 {
 	FBinder* binder = mBinders[key];
-
+	
 	if (!binder)
 	{
 		binder = CMemoryPoolManager::GetInst()->Allocate<FBinder>();
 		mBinders[key] = binder;
 	}
-
+	
 	FBindFunction* binderFunc = CMemoryPoolManager::GetInst()->Allocate<FBindFunction>();
-
+	
 	binderFunc->obj = obj;
 	binderFunc->func = func;
-
+	
 	binder->Functions.emplace_back(binderFunc);
 }
 
@@ -1512,21 +1504,21 @@ void CInputComponent::AddFunctionToBinder<T>(const std::string& key, T* obj, voi
 void CInputComponent::DeleteFunctionFromBinder(const std::string& key, void* obj)
 {
 	FBinder* binder = mBinders[key];
-
+	
 	if (!binder)
 		return;
-
+	
 	std::vector<FBindFunction*>& functions = binder->Functions;
-
+	
 	for (size_t i = functions.size(); i > 0; i--)
 	{
 		FBindFunction* bindFunc = functions[i - 1];
-
+		
 		if (bindFunc->obj == obj)
 		{
 			std::swap(functions[i - 1], functions.back());
 			functions.pop_back();
-
+			
 			CMemoryPoolManager::GetInst()->DeallocateButKeepPool<FBindFunction>(bindFunc);
 		}
 	}
@@ -1540,10 +1532,10 @@ void CInputComponent::DeleteFunctionFromBinder(const std::string& key, void* obj
 void AddInputToBinder(const std::string& key, SDL_Scancode keyCode, EKeyAction action)
 {
 	FBinder* binder = mBinders[key];
-
+	
 	if (!binder)
 		return;
-
+	
 	binder->Keys.emplace_back(std::make_pair(keyCode, action));
 }
 
@@ -1551,10 +1543,10 @@ void AddInputToBinder(const std::string& key, SDL_Scancode keyCode, EKeyAction a
 void AddInputToBinder(const std::string& key, Uint8 button, EKeyAction action)
 {
 	FBinder* binder = mBinders[key];
-
+	
 	if (!binder)
 		return;
-
+	
 	binder->Mouses.emplace_back(std::make_pair(button, action));
 }
 ```
@@ -1817,10 +1809,10 @@ CQuadTree::CQuadTree(CCamera* camera) :
 {
 	int totalNodes = (int)((pow(4, MAX_SPLIT + 1) - 1) / 3);
 	CMemoryPoolManager::GetInst()->CreatePool<CQTNode>(totalNodes);
-
+	
 	if (!mRoot)
 		mRoot = CMemoryPoolManager::GetInst()->Allocate<CQTNode>();
-
+	
 	mRoot->mCamera = camera;
 }
 ```
@@ -2113,3 +2105,204 @@ void CRigidbody::Update(float deltaTime)
 ```
 
 ^a4c1df
+
+---
+### CSceneUI
+```cpp
+class CSceneUI
+{
+public:
+	CSceneUI();
+	virtual ~CSceneUI();
+	
+private:
+	std::vector<CWidget*> mWidgets;
+	
+	CWidget* mCurrHovered = nullptr;
+	CWidget* mHeldWidget  = nullptr;
+	
+public:
+	virtual bool Init();
+	virtual void Update(float deltaTime);
+	virtual void LateUpdate(float deltaTime);
+	virtual void Render(SDL_Renderer* renderer);
+	
+public:
+	CWidget* FindWidget(size_t id);
+	void BringWidgetToTop(CWidget* widget);
+	CWidget* GetHoveredWidget() const { return mCurrHovered; }
+	CWidget* GetHeldWidget() const { return mHeldWidget; }
+	void SetHeldWidget(CWidget* heldWidget)
+	{
+		mHeldWidget = heldWidget;
+	}
+
+protected:
+	void AddWidget(CWidget* widget);
+	
+private:
+	void SetSceneUI(CWidget* widget);
+	CWidget* FindHoveredWidget(const FVector2D& mousePos);
+	CWidget* FindHoveredInTree(CWidget* widget, const FVector2D& mousePos);
+	void UpdateInput();
+};
+```
+
+^e06264
+
+```cpp
+CWidget* CSceneUI::FindHoveredWidget(const FVector2D& mousePos)
+{
+	for (size_t i = mWidgets.size(); i > 0; --i)
+	{
+		CWidget* hovered = FindHoveredInTree(mWidgets[i - 1], mousePos);
+
+		if (hovered)
+			return hovered;
+	}
+	return nullptr;
+}
+```
+
+^7bf0af
+
+```cpp
+void CSceneUI::UpdateInput()
+{
+	const FVector2D& mousePos = CInputManager::GetInst()->GetMousePos();
+	
+	bool isPressed  = CInputManager::GetInst()->GetMouseButtonState(SDL_BUTTON_LEFT, EKeyAction::PRESS);
+	bool isHeld     = CInputManager::GetInst()->GetMouseButtonState(SDL_BUTTON_LEFT, EKeyAction::HOLD);
+	bool isReleased = CInputManager::GetInst()->GetMouseButtonState(SDL_BUTTON_LEFT, EKeyAction::RELEASE);
+	
+	if (mHeldWidget)
+	{
+		if (!CCollisionManager::GetInst()->AABBPointCollision(mHeldWidget->GetRect(), mousePos))
+		{
+			if (isHeld || isReleased)
+			{
+				mHeldWidget->HandleUnhovered(mousePos, isHeld, isReleased);
+				return;
+			}
+		}
+	}
+	
+	CWidget* newHovered = FindHoveredWidget(mousePos);
+	{
+		if (mCurrHovered != newHovered)
+		{
+			if (mCurrHovered)
+				mCurrHovered->HandleUnhovered(mousePos, isHeld, isReleased);
+			
+			mCurrHovered = newHovered;
+		}
+		if (mCurrHovered)
+			mCurrHovered->HandleHovered(mousePos, isPressed, isHeld, isReleased);
+	}
+}
+```
+
+^5cc348
+
+---
+### CWidget
+```cpp
+class CWidget abstract : public CWidgetBase
+{
+	friend class CSceneUI;
+	friend class CWidgetComponent;
+	
+protected:
+	CWidget();
+	virtual ~CWidget();
+	
+protected:
+	CSceneUI* mSceneUI = nullptr;
+	
+	CWidget* mParent = nullptr;
+	std::vector<CWidget*> mChilds;
+	
+	bool mIsInteractable = false;
+	bool mWidgetHovered  = false;
+	bool mWidgetHeld     = false;
+	
+protected:
+	virtual void Update(float deltaTime);
+	virtual void LateUpdate(float deltaTime);
+	virtual void Render(SDL_Renderer* renderer, const FVector2D& topLeft = FVector2D::ZERO);
+	virtual void Release() = 0;
+	
+	virtual void HandleHovered(const FVector2D& mousePos, bool isPressed, bool isHeld, bool isReleased);
+	virtual void HandleUnhovered(const FVector2D& mousePos, bool isHeld, bool isReleased);
+	
+public:	
+	CWidget* FindRootWidget();
+	CWidget* FindWidget(size_t id);
+	
+	void AddChild(CWidget* child);
+	bool DeleteChild(CWidget* child);
+	
+	CSceneUI* GetOwnerSceneUI() const { return mSceneUI; }
+};
+```
+
+^50ddf5
+
+---
+### CUserWidget
+```cpp
+class CUserWidget abstract : public CWidget
+{
+public:
+	CUserWidget();
+	virtual ~CUserWidget();
+	
+private:
+	bool mIsMovable = false;
+	FVector2D mDragOffset = FVector2D::ZERO;
+	
+protected:
+	virtual void Construct() = 0;
+	virtual void Release()   = 0;
+	
+public:
+	void SetInteractable(bool interactable)
+	{
+		mIsInteractable = interactable;
+		mIsMovable &= mIsInteractable;
+	}
+	void SetMovable(bool movable)
+	{
+		mIsMovable = movable;
+		mIsInteractable |= movable;
+	}
+	
+protected:
+	void HandleDragging(const FVector2D& mousePos, bool isPressed, bool isHeld, bool isReleased);
+};
+```
+
+^93523d
+
+```cpp
+void CUserWidget::HandleDragging(const FVector2D& mousePos, bool isPressed, bool isHeld, bool isReleased)
+{
+    if (!mIsInteractable || !mIsMovable)
+        return;
+		
+    if (isPressed)
+    {
+        mDragOffset = mousePos - GetTransform()->GetWorldPos();
+        mSceneUI->BringWidgetToTop(this);
+    }
+    else if (isHeld && mDragOffset != FVector2D::ZERO)
+    {
+        FVector2D newPos = mousePos - mDragOffset;
+        GetTransform()->SetWorldPos(newPos);
+    }
+    else if (isReleased)
+        mDragOffset = FVector2D::ZERO;
+}
+```
+
+^3df818
