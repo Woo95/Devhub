@@ -63,17 +63,17 @@ This section explains how the **player interacts** with the environment and game
 ---
 #### `PlayerController Class - Key Methods`
 
-##### `Method #1: Green Capsule – Ground collision via CapsuleCollider2D`
+##### `Method #1: Green Capsule - Ground collision via CapsuleCollider2D`
 ![[2D Platformer Game (Code)#^15ab87]]
 The green capsule is the main `CapsuleCollider2D` for **ground collision**. It's disabled when jumping up to pass through platforms and re-enabled when falling to detect landing.
 
 ---
-##### `Method #2: Yellow box – Hit zone for traps, enemies, and items`
+##### `Method #2: Yellow box - Hit zone for traps, enemies, and items`
 ![[2D Platformer Game (Code)#^9d9c5c]]
 The yellow box is a Gizmo-drawn **hit zone** used to detect traps, enemies, and coins. It ignores platforms, allowing the player to pass through them when jumping.
 
 ---
-##### `Method #3: Red box – Stomp zone for killing enemies on landing`
+##### `Method #3: Red box - Stomp zone for killing enemies on landing`
 ![[2D Platformer Game (Code)#^d56094]]
 The red box is a Gizmo-drawn **stomp zone** below the player’s feet. It detects enemies during a downward jump; if hit, the enemy is killed and the player bounces slightly upward.
 
