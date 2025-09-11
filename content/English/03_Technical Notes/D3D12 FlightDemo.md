@@ -2,6 +2,7 @@
 ---
 ## **Overview**
 This project is a lightweight **3D flight demo** in C++ using the **DirectX 12 graphics API**. Developed as a **learning exercise**, it focuses on the **CPU-side setup of the D3D12 rendering pipeline**. The demo also implements **design patterns** for the game-specific systems such as a **[[Command Queue for Actions|command queue for actions]]** and **scene stack management**.
+
 ![[D3D12 FlightDemo (Media)#^8ce308]]
 [**View Repository**](https://github.com/Woo95/DirectX12_FlightDemo)
 

@@ -20,7 +20,23 @@ The above image is a **simplified design diagram**, focused on the core executio
 
 ---
 ## **📂 Project Exploration**
-### **1. Goals and Directions**
+### **1. Key Implementations** (Note in Progress)
+1. **[[Asset Manager Memory Optimization Design]]**
+2. **[[Scene Manager and Resource Optimization Design]]**
+3. **[[Scene-Layer-Object-Component Hierarchy]]**
+	- **[[Built-in Component Set]]**
+4. **[[Input Handling System Structure]]**
+	- Related Component: `CInputComponent`
+5. **[[Object Visual Composition and Animation Structure]]**
+	- Related Component: `CSpriteComponent`, `CVFXComponent`
+6. **[[Collision and Physics System Structure]]**
+	- Related Component: `CBoxCollider`, `CCircleCollider`, `CRigidbody`
+7. **[[Widget System Structure]]**
+	- Related Component: `CWidgetComponent`
+	- **[[Built-in Widget Set]]**
+
+---
+### **2. Goals and Directions**
 Before starting this project, I clearly set the **goals and directions** that would serve as standards for the entire development process. Based on these, I aimed not only to implement simple functions but also to achieve a **framework with structural completeness**.
 - **Goals**:
 	1. **C++ and Low-Level Technical Skills**
@@ -37,26 +53,10 @@ Before starting this project, I clearly set the **goals and directions** that wo
 	3. Flexible Extensibility and Maintainability
 
 ---
-### **2. Reflections and Challenges**
+### **3. Reflections and Challenges**
 Throughout the development process, I remained faithful to the **goals and direction** I had set. In order to improve **technical completeness**, I repeatedly redesigned and reimplemented even functions that were already finished, applying **better structures and theoretically more appropriate data structures or flows**. These cycles of **repeated modification and reimplementation** were the result of prioritizing high technical quality, and their traces remain clearly in the **Git commit history**.
 
 However, this approach led to the problem of **exceeding the planned schedule**, and the total development period extended to about **seven months**. Through this, I realized the importance of maintaining a **balance between technical obsession and practical judgment**, as well as making decisions within a **limited development timeframe**.
-
----
-### **3. Key Implementations** (Note in Progress)
-1. **[[Asset Manager Memory Optimization Design]]**
-2. **[[Scene Manager and Resource Optimization Design]]**
-3. **[[Scene-Layer-Object-Component Hierarchy]]**
-	- **[[Built-in Component Set]]**
-4. **[[Input Handling System Structure]]**
-	- Related Component: `CInputComponent`
-5. **[[Object Visual Composition and Animation Structure]]**
-	- Related Component: `CSpriteComponent`, `CVFXComponent`
-6. **[[Collision and Physics System Structure]]**
-	- Related Component: `CBoxCollider`, `CCircleCollider`, `CRigidbody`
-7. **[[Widget System Structure]]**
-	- Related Component: `CWidgetComponent`
-	- **[[Built-in Widget Set]]**
 
 ---
 ### **4. Results and Achievements**

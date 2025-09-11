@@ -3,7 +3,7 @@
 ## **개요**
 이 라이브러리는 C++ 스마트 포인터의 내부 구조와 동작 방식을 더 자세히 이해할 수 있도록 사용자 정의 **shared pointer**를 구현한 것입니다. `std::shared_ptr`의 **참조 카운트**(reference counting) 방식을 모방하면서도, 명확성과 최소한의 오버헤드에 중점을 두었습니다. 구현은 **헤더 전용**(header-only)으로 되어 있으며, 더 이상 필요하지 않은 리소스를 자동으로 삭제함으로써 안전한 메모리 관리를 제공합니다. 
 
-[**View Repository**](https://github.com/Woo95/SharedPtr)
+[**저장소 보기**](https://github.com/Woo95/SharedPtr)
 
 ---
 ## **클래스 목록 및 설명**
