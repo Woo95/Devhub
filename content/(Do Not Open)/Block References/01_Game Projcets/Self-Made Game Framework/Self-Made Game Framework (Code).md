@@ -1756,7 +1756,7 @@ void CSceneCollision::CleanPairs()
 		CCollider* collider2 = iter->first.collider2;
 		const EPair::Status& status = iter->second;
 		
-		if (!collider1->GetActive() || !collider2->GetActive())
+		if (!collider1->GetActive() || !collider2->GetActive() || !collider1->Intersect(collider2))
 		{
 			if (status == EPair::COLLIDED)
 			{
