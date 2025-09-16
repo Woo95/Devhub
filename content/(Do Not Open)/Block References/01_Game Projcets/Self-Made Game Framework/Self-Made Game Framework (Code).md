@@ -52,10 +52,11 @@ CAssetManager* CAssetManager::GetInst()
 ---
 ### CSceneManager
 ```cpp
-void CSceneManager::ChangeRequest(ETransition transition, ESceneState state)
+void CSceneManager::ChangeRequest(ETransition transition, ESceneState state, void* payload = nullptr)
 {
 	mPending.transition   = transition;
 	mPending.pendingState = state;
+	mPending.payload      = payload;
 }
 ```
 
@@ -99,6 +100,7 @@ void CSceneManager::ChangeApply()
 	
 	mPending.transition   = ETransition::NONE;
 	mPending.pendingState = ESceneState::NONE;
+	mPending.payload      = nullptr;
 }
 ```
 
@@ -111,7 +113,7 @@ void CSceneManager::PushScene()
 	newScene->LoadResources();
 	
 	mScenes.push_back(newScene);
-	mScenes.back()->Enter();
+	mScenes.back()->Enter(mPending.payload);
 }
 ```
 
@@ -143,7 +145,7 @@ void CSceneManager::SwapScene()
 	PopScene();
 	
 	mScenes.push_back(newScene);
-	mScenes.back()->Enter();
+	mScenes.back()->Enter(mPending.payload);
 }
 ```
 
@@ -168,7 +170,7 @@ void CSceneManager::ClearThenPushScene()
 	ClearScenes();
 	
 	mScenes.push_back(newScene);
-	mScenes.back()->Enter();
+	mScenes.back()->Enter(mPending.payload);
 }
 ```
 
@@ -189,7 +191,7 @@ void CSceneManager::SwapScene()
 	}
 	
 	mScenes.push_back(newScene);
-	mScenes.back()->Enter();
+	mScenes.back()->Enter(mPending.payload);
 }
 ```
 
@@ -273,7 +275,7 @@ protected:
     std::vector<CLayer*> mLayers;
 	
 protected:
-	virtual bool Enter() = 0;
+	virtual bool Enter(void* payload = nullptr) = 0;
 	virtual bool Exit()  = 0;
 	
     virtual void Update(float deltaTime);
