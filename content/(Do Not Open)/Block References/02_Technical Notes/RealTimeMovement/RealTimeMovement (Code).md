@@ -284,10 +284,10 @@ static public void ReceivedMessageFromServer(string msg, TransportPipeline pipel
 			// [Omitted] Spawn newly joined remote player on other clients
 			break;
 		case ServerToClientSignifiers.PTS_PLAYER_MOVE:
-			// [Omitted] Update remote player’s position (Type A)
+			// [Omitted] Update remote player's position (Type A)
 			break;
 		case ServerToClientSignifiers.PTS_PLAYER_MOVE2:
-			// [Omitted] Update remote player’s position & input (Type B)
+			// [Omitted] Update remote player's position & input (Type B)
 			break;
 		case ServerToClientSignifiers.PTS_PLAYER_LEFT:
 			// [Omitted] Remove disconnected player from scene

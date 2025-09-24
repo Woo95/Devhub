@@ -8,4 +8,4 @@
 - Propnight — **Master 1** (Highest tier)
 
 ---
-Recognized and **invited by multiple pro teams** in Apex Legends, I bring practical balancing instincts, deep mechanical insight, and a developer’s perspective on strategic systems and gameplay structure.
+Recognized and **invited by multiple pro teams** in Apex Legends, I bring practical balancing instincts, deep mechanical insight, and a developer's perspective on strategic systems and gameplay structure.

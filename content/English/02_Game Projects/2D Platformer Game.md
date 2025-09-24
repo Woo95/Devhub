@@ -28,7 +28,7 @@ This **hierarchical setup** contributed to **faster iteration** and **more relia
 
 ---
 ### `3. Parallax Scrolling Background`
-Background layers scroll based on the camera’s position, which itself follows the player, creating a **parallax effect** tied to player movement.
+Background layers scroll based on the camera's position, which itself follows the player, creating a **parallax effect** tied to player movement.
 ![[2D Platformer Game (Media)#^d8b9db]]
 This system is implemented through two core classes, `CameraControl` for camera tracking and `BackgroundController` for background scrolling based on depth.
 
@@ -75,8 +75,8 @@ The yellow box is a Gizmo-drawn **hit zone** used to detect traps, enemies, and 
 ---
 ##### `Method #3: Red box - Stomp zone for killing enemies on landing`
 ![[2D Platformer Game (Code)#^d56094]]
-The red box is a Gizmo-drawn **stomp zone** below the player’s feet. It detects enemies during a downward jump; if hit, the enemy is killed and the player bounces slightly upward.
+The red box is a Gizmo-drawn **stomp zone** below the player's feet. It detects enemies during a downward jump; if hit, the enemy is killed and the player bounces slightly upward.
 
 ---
 ## **Conclusion**
-> This project focused on refining **player interaction** and **game responsiveness** through precise **collision handling** and trigger logic. While simple in scope, it served as a strong foundation for understanding **Unity’s 2D platformer** and building **scalable gameplay features**.
+> This project focused on refining **player interaction** and **game responsiveness** through precise **collision handling** and trigger logic. While simple in scope, it served as a strong foundation for understanding **Unity's 2D platformer** and building **scalable gameplay features**.

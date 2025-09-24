@@ -36,7 +36,7 @@ Spawns a given number of resource objects at **random positions** within the fie
 ### `2. Simple AI Pattern for Units (FSM Structure)`
 All units follow simple **finite state machine (FSM)** to manage movement, targeting, and attack behaviors in real time. (see the [[2D Platformer Game]] for a similar FSM implementation)
 ![[Tower Defender - Waves of War (Media)#^fe06c5]]
-The **yellow** and **red** circles drawn via `OnDrawGizmos()` visually represent each unit’s `searchRadius` and `attackRadius`, respectively.
+The **yellow** and **red** circles drawn via `OnDrawGizmos()` visually represent each unit's `searchRadius` and `attackRadius`, respectively.
 - **Guardians**
     - **State**:
         - `IDLE → CHASE → ATTACK`

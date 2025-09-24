@@ -21,7 +21,7 @@ Initialization stages 1-5, are all executed once within `Game::Initialize()`:
 		- **Creating GPU resources** like buffers and textures
 		- **Managing** descriptor heaps and command objects
 		- **Controlling** rendering operations and querying hardware capabilities
-- #### Key Function
+- #### Key Method
 	- [[D3D12 FlightDemo (Code)#^771272|bool D3DApp::InitDirect3D()]]:
 		- Called once by [[D3D12 FlightDemo (Code)#^cdc89e|D3DApp::Initialize()]]. It **creates the graphics device** and sets up communication with the GPU. It selects the best graphics adapter and initializes device resources like **descriptor sizes** (used to access GPU resources) and **multisampling support** (for anti-aliasing).
 
@@ -29,7 +29,7 @@ Initialization stages 1-5, are all executed once within `Game::Initialize()`:
 ### `Stage 2 - Graphics Pipeline Configuration`
 - #### What is it?
 	- This stage defines **how rendering is performed** by configuring the GPU pipeline. It prepares the **root signature**, compiles **shader code**, and creates **Pipeline State Objects**.
-- #### Key Functions
+- #### Key Methods
 	- [[D3D12 FlightDemo (Code)#^3dc4c3|void Game::BuildRootSignature()]]:
 		- Defines what **shader resources** ([[D3D12 FlightDemo (Code)#^1ee3b0|CBVs]], [[D3D12 FlightDemo (Code)#^c55cc0|SRVs]], [[D3D12 FlightDemo (Code)#^801570|Samplers]]) are available.
 	- [[D3D12 FlightDemo (Code)#^9e39a9|void Game::BuildShadersAndInputLayout()]]:
@@ -41,7 +41,7 @@ Initialization stages 1-5, are all executed once within `Game::Initialize()`:
 ### `Stage 3 - Resource Asset Setup`
 - #### What is it?
     - This stage prepares the **resources that will be used during rendering**; it loads **texture data**, defines **material properties**, and sets up the **descriptor heap** that allows shaders to access those resources.
-- #### Key Functions
+- #### Key Methods
     - [[D3D12 FlightDemo (Code)#^d68072|void Game::LoadTextures()]]:
         - Loads **texture files** into GPU memory and associates them with shader-visible [[D3D12 FlightDemo (Code)#^c55cc0|SRVs]].
     - [[D3D12 FlightDemo (Code)#^1e6763|void Game::BuildMaterials()]]:
@@ -53,7 +53,7 @@ Initialization stages 1-5, are all executed once within `Game::Initialize()`:
 ### `Stage 4 - Geometry and Vertex Buffer Setup`
 - #### What is it?
 	- This stage generates the **meshes** and **shapes** that will be rendered; it creates **vertex and index buffers** for the GPU.
-- #### Key Function
+- #### Key Method
 	- [[D3D12 FlightDemo (Code)#^e40791|void Game::BuildShapeGeometry()]]:
 		- Creates **geometry data** (vertices, indices), generates **GPU buffers**, and organizes draw call parameters for rendering.
     
@@ -62,7 +62,7 @@ Initialization stages 1-5, are all executed once within `Game::Initialize()`:
 ### `Stage 5 - Frame Resources Setup`
 - #### What is it?
 	- This stage prepares **per-frame memory structures** to store [[D3D12 FlightDemo (Code)#^f5f00b|constant buffers]] and [[D3D12 FlightDemo (Code)#^c80301|command allocators]], supporting CPU-GPU synchronization across frames.
-- #### Key Function
+- #### Key Method
 	- [[D3D12 FlightDemo (Code)#^925a50|void Game::BuildFrameResources()]]: 
 		- Allocates a **set of resources for each frame** (e.g., constant buffers and command allocators) to let the CPU prepare upcoming frames while the GPU works on the current one.
 

@@ -16,7 +16,7 @@ This video demonstrates the crafting process of items using 8 predefined recipes
 
 #### `Item Related Classes`
 - [[Minecraft-Like Crafting System (Code)#^c616c6|ItemInfo class]]:
-	- A `ScriptableObject` that holds an item’s icon, description, and `eItemType`, defining properties shared across all instances of the item.
+	- A `ScriptableObject` that holds an item's icon, description, and `eItemType`, defining properties shared across all instances of the item.
 	- [[Minecraft-Like Crafting System (Code)#^7e13a8|eItemType enum]]:
 		- Unique item IDs used to categorize items, specifically **for the crafting algorithm**.
 - [[Minecraft-Like Crafting System (Code)#^c6f0e7|ItemInstance class]]:
@@ -54,7 +54,7 @@ The `ItemSlot` class serves as the foundation of a flexible, modular framework f
 ---
 Derived classes like `CraftingOutputSlot` simply `override` this method to customize behavior.
 ![[Minecraft-Like Crafting System (Code)#^8a723c]]
-**Result:** You get clean, reusable logic that’s **easy to extend**, **debug**, and **customize** per slot type.
+**Result:** You get clean, reusable logic that's **easy to extend**, **debug**, and **customize** per slot type.
 
 ---
 ### `2. Easy Recipe Setup`

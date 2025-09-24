@@ -39,7 +39,7 @@ In *Spaceship Battle*, the game reacts to changes in orthographic size by adjust
 	- [[Camera Projection (Code)#^f510cd|ClampPlayerYPosition()]]
 #### `PlayerBehaviour Class - Code Breakdown`
 ![[Camera Projection (Code)#^1db78b|SetPlayerBoundaryCameraPerspective()]]
-This function calculates the vertical boundaries for the player based on the camera’s position and orthographic size, ensuring the player stays within the visible area along the Y-axis.
+This function calculates the vertical boundaries for the player based on the camera's position and orthographic size, ensuring the player stays within the visible area along the Y-axis.
 
 ---
 ![[Camera Projection (Code)#^58ca00|SetPlayerPositionCameraPerspective()]]
@@ -47,7 +47,7 @@ This function sets the initial spawn position of the player, ensuring the player
 
 ---
 ![[Camera Projection (Code)#^f510cd|ClampPlayerYPosition()]]
-This function clamps the player's Y-position to the boundaries calculated earlier, keeping the player within the vertical limits of the camera’s view. The X-position remains fixed.
+This function clamps the player's Y-position to the boundaries calculated earlier, keeping the player within the vertical limits of the camera's view. The X-position remains fixed.
 
 ---
 ## **Conclusion**
