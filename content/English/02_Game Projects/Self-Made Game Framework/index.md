@@ -21,19 +21,19 @@ The above image is a **simplified design diagram**, focused on the core executio
 ---
 ## **📂 Project Exploration**
 ### **1. Key Implementations** (Note in Progress)
-1. **[[Asset Manager Memory Optimization Design]]**
-2. **[[Scene Manager and Resource Optimization Design]]**
-3. **[[Scene-Layer-Object-Component Hierarchy]]**
-	- **[[Built-in Component Set]]**
-4. **[[Input Handling System Structure]]**
+1. **[[01_Asset Manager Memory Optimization Design|Asset Manager Memory Optimization Design]]**
+2. **[[02_Scene Manager and Resource Optimization Design|Scene Manager and Resource Optimization Design]]**
+3. **[[03_1_Scene-Layer-Object-Component Hierarchy|Scene-Layer-Object-Component Hierarchy]]**
+	- **[[03_2_Built-in Component Set|Built-in Component Set]]**
+4. **[[04_Input Handling System Structure|Input Handling System Structure]]**
 	- Related Component: `CInputComponent`
-5. **[[Object Visual Composition and Animation Structure]]**
+5. **[[05_Object Visual Composition and Animation Structure|Object Visual Composition and Animation Structure]]**
 	- Related Component: `CSpriteComponent`, `CVFXComponent`
-6. **[[Collision and Physics System Structure]]**
+6. **[[06_Collision and Physics System Structure|Collision and Physics System Structure]]**
 	- Related Component: `CBoxCollider`, `CCircleCollider`, `CRigidbody`
-7. **[[Widget System Structure]]**
+7. **[[07_1_Widget System Structure|Widget System Structure]]**
 	- Related Component: `CWidgetComponent`
-	- **[[Built-in Widget Set]]**
+	- **[[07_2_Built-in Widget Set|Built-in Widget Set]]**
 
 ---
 ### **2. Goals and Directions**
