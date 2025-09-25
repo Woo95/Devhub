@@ -6,7 +6,7 @@ draft: false
 # **Self-Made Grame Framework**
 ---
 ## **Overview**
-This project is a **2D game framework** created based on the **C++ language** and **SDL2 graphics API**. A game made using this framework can be found at [[Italian Brainrot Survivors]].
+This project is a **2D game framework** created based on the **C++ language** and **SDL2 multimedia library**. A game made using this framework can be found at [[Italian Brainrot Survivors]].
 
 > ⚠️ Note: This is **not a copy of open-source projects on the internet**, but a framework **designed and implemented from scratch** after considering the required structures.
 
