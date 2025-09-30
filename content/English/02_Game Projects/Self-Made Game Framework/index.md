@@ -20,20 +20,33 @@ The above image is a **simplified design diagram**, focused on the core executio
 
 ---
 ## **📂 Project Exploration**
-### **1. Key Implementations** (Note in Progress)
+### **1. Key Implementations**
 1. **[[01_Asset Manager Memory Optimization Design|Asset Manager Memory Optimization Design]]**
+	- Prevent memory fragmentation, optimize cache usage
 2. **[[02_Scene Manager and Resource Optimization Design|Scene Manager and Resource Optimization Design]]**
+	- Stack based scene transition structure
+	- Smart pointer based resource management
 3. **[[03_1_Scene-Layer-Object-Component Hierarchy|Scene-Layer-Object-Component Hierarchy]]**
 	- **[[03_2_Built-in Component Set|Built-in Component Set]]**
+	- Role separation, object-oriented design
+	- Flexible extension, systematic management
 4. **[[04_Input Handling System Structure|Input Handling System Structure]]**
+	- Separated input manager, input components
+	- Flexible input handling and scalability
 	- Related Component: `CInputComponent`
 5. **[[05_Object Visual Composition and Animation Structure|Object Visual Composition and Animation Structure]]**
+	- Shared textures minimize resource duplication
+	- Independent control for each object via cloned animations
 	- Related Component: `CSpriteComponent`, `CVFXComponent`
 6. **[[06_Collision and Physics System Structure|Collision and Physics System Structure]]**
+	- Spatial partitioning, collision channel based detection
+	- Manage collision pairs, handle physical interactions
 	- Related Component: `CBoxCollider`, `CCircleCollider`, `CRigidbody`
 7. **[[07_1_Widget System Structure|Widget System Structure]]**
-	- Related Component: `CWidgetComponent`
 	- **[[07_2_Built-in Widget Set|Built-in Widget Set]]**
+	- Hierarchical UI management
+	- Input handling and basic interaction integration
+	- Related Component: `CWidgetComponent`
 
 ---
 ### **2. Goals and Directions**
