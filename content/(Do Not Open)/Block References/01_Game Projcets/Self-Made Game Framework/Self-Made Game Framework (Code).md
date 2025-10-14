@@ -433,19 +433,22 @@ CLayer::~CLayer()
 ```cpp
 void CLayer::Update(float deltaTime)
 {
-    for (CObject* obj : mObjects)
-    {
-        if (!obj->GetActive())
-        {
-            obj->Destroy();
-            continue;
-        }
-        else if (!obj->GetEnable())
-        {
-            continue;
-        }
-        obj->Update(deltaTime);
-    }
+	for (int i = 0; i < mObjects.size(); i++)
+	{
+		CObject* obj = mObjects[i];
+
+		if (!obj->GetActive())
+		{
+			obj->Destroy();
+
+			continue;
+		}
+		else if (!obj->GetEnable())
+		{
+			continue;
+		}
+		obj->Update(deltaTime);
+	}
 }
 ```
 
@@ -689,8 +692,10 @@ CComponent::~CComponent()
 ```cpp
 bool CComponent::Init()
 {
-	for (CComponent* child : mChilds)
+	for (int i = 0; i < mChilds.size(); i++)
 	{
+		CComponent* child = mChilds[i];
+
 		if (!child->Init())
 			return false;
 	}
@@ -703,11 +708,14 @@ bool CComponent::Init()
 ```cpp
 void CComponent::Update(float deltaTime)
 {
-	for (CComponent* child : mChilds)
+	for (int i = 0; i < mChilds.size(); i++)
 	{
+		CComponent* child = mChilds[i];
+
 		if (!child->GetActive())
 		{
 			child->Destroy();
+
 			continue;
 		}
 		else if (!child->GetEnable())
@@ -802,12 +810,12 @@ private:
     
 public:
     const SDL_Rect& GetFrame();
-    bool GetLooped() const;
-    void ResetLoop();
     
+    bool IsPlayedOnce() const;
+	void ResetPlayedOnce();
+    
+    EAnimationState GetState() const;
     void SetState(EAnimationState state);
-    
-private:
     void AddState(EAnimationState state, std::shared_ptr<FAnimationData> data);
 };
 ```
@@ -847,36 +855,38 @@ struct FAnimationData
 void CAnimation::Update(float deltaTime)
 {
 	FAnimationData* aniData = mAnimationStates[mCurrentState].get();
-	
+
 	switch (aniData->type)
 	{
 		case EAnimationType::NONE:
 			break;
-			
+
 		case EAnimationType::MOVE:
 		{
 			const FVector2D& currentPos = mTransform->GetWorldPos();
-			
+
 			FVector2D posDelta = currentPos - mPrevPos;
-			
+
 			mFrameInterval += posDelta.Length();
-			
+
 			float frameTransitionDistance = aniData->intervalPerFrame / aniData->frames.size();
-			
+
 			if (mFrameInterval >= frameTransitionDistance)
 			{
 				mCurrIdx = (mCurrIdx + 1) % aniData->frames.size();
-				
+
 				mFrameInterval -= frameTransitionDistance;
 			}
 			mPrevPos = currentPos;
 		}
 		break;
-		
+
 		case EAnimationType::TIME:
 		{
+			if (mPlayedOnce)
+				return;
+
 			mFrameInterval += deltaTime;
-			
 			if (mFrameInterval >= aniData->intervalPerFrame)
 			{
 				if (aniData->isLoop)
@@ -885,8 +895,8 @@ void CAnimation::Update(float deltaTime)
 				}
 				else
 				{
-					mLooped = (mCurrIdx >= aniData->frames.size() - 1) ? true : false;
-					if (!mLooped)
+					mPlayedOnce = (mCurrIdx >= aniData->frames.size() - 1) ? true : false;
+					if (!mPlayedOnce)
 						mCurrIdx++;
 				}
 				mFrameInterval = 0.0f;
@@ -1081,10 +1091,10 @@ void CVFXComponent::Update(float deltaTime)
 	
 	mAnimation->Update(deltaTime);
 	
-	if (mAnimation->GetLooped())
+	if (mAnimation->IsPlayedOnce())
 	{
 		mPlayVFX = false;
-		mAnimation->ResetLoop();
+		mAnimation->ResetPlayedOnce();
 	}
 }
 ```
