@@ -13,7 +13,7 @@ Players must survive endless waves of enemies, with a final boss appearing after
 ---
 ## **Core Features**
 
-> ⚠️ Note: All code snippets are **simplified versions**.
+> ⚠️ Note: All code snippets are **simplified versions**. Full implementation in the [**repository**](https://github.com/Woo95/SDL2_Italian_Brainrot_Survivors)
 ### `1. CSV-Based Data Management`
 All game-related data (mobs, weapons, power-ups, etc.) are **managed via CSV files**, making it **easy to balance and expand content by editing the CSV files without modifying the code**.
 ![[Italian Brainrot Survivors (Media)#^5fea91]]
