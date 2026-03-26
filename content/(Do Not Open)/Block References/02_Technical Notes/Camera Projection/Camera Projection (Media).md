@@ -1,6 +1,5 @@
 # Media Block References
 ---
-## Eng & Kor
 
 ### GIF
 ![[Orthographic Camera-Relative Object Setup.gif]] ^ed2b15

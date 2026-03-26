@@ -1,7 +1,5 @@
 # Media Block References
 ---
-## Eng & Kor
-
 ### GIF
 #### From the Infinite Runners Project
 ![[infinite runners object pooling.gif]] ^a71532

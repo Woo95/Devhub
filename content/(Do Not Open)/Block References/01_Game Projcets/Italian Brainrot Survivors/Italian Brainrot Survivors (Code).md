@@ -1,6 +1,5 @@
 # Code Block References
 ---
-## Eng & Kor
 
 ### DataLoader
 ```cpp
@@ -42,7 +41,6 @@ void CDataLoader::LoadAllMobData()
 ^4357bd
 
 ### ScrollMapComponent
-#### Kor
 ```cpp
 void CScrollMapComponent::Render(SDL_Renderer* renderer)
 {
@@ -119,83 +117,6 @@ void CScrollMapComponent::Render(SDL_Renderer* renderer)
 
 ^207b8a
 
-#### Eng
-```cpp
-void CScrollMapComponent::Render(SDL_Renderer* renderer)
-{
-	SDL_Rect viewRect = mCamera->GetViewRect();
-	viewRect.x = (int)roundf(viewRect.x);
-	viewRect.y = (int)roundf(viewRect.y);
-	
-	const SDL_Rect& texRect = mTexture->GetTextureFrame();
-	const FVector2D& mapScale = mTransform->GetWorldScale();
-	
-	// Camera offset within the texture
-	int offsetX = viewRect.x % (int)mapScale.x;
-	int offsetY = viewRect.y % (int)mapScale.y;
-	if (offsetX < 0) offsetX += (int)mapScale.x;
-	if (offsetY < 0) offsetY += (int)mapScale.y;
-	
-	// Texture coordinate ratio relative to world scale
-	float texW = texRect.w / mapScale.x;
-	float texH = texRect.h / mapScale.y;
-	
-	// Check if the camera view exceeds the texture boundary
-	bool overX = offsetX + viewRect.w > (int)mapScale.x;
-	bool overY = offsetY + viewRect.h > (int)mapScale.y;
-	
-	// Calculate inner and overflow regions
-	int innerW = overX ? (int)mapScale.x - offsetX : viewRect.w;
-	int innerH = overY ? (int)mapScale.y - offsetY : viewRect.h;
-	int outerW = viewRect.w - innerW;
-	int outerH = viewRect.h - innerH;
-	
-	SDL_Rect src, dst;
-	
-	// Top-left 
-	src.x = (int)roundf(offsetX * texW);
-	src.y = (int)roundf(offsetY * texH);
-	src.w = (int)roundf(innerW * texW);
-	src.h = (int)roundf(innerH * texH);
-	dst = { 0, 0, innerW, innerH };
-	SDL_RenderCopy(renderer, mTexture->GetTexture(), &src, &dst);
-	// Top-right
-	if (outerW > 0)
-	{
-		src.x = 0;
-		src.y = (int)roundf(offsetY * texH);
-		src.w = (int)roundf(outerW * texW);
-		src.h = (int)roundf(innerH * texH);
-		dst = { innerW, 0, outerW, innerH };
-		SDL_RenderCopy(renderer, mTexture->GetTexture(), &src, &dst);
-	}
-	// Bottom-left
-	if (outerH > 0)
-	{
-		src.x = (int)roundf(offsetX * texW);
-		src.y = 0;
-		src.w = (int)roundf(innerW * texW);
-		src.h = (int)roundf(outerH * texH);
-		dst = { 0, innerH, innerW, outerH };
-		SDL_RenderCopy(renderer, mTexture->GetTexture(), &src, &dst);
-	}
-	// Bottom-right
-	if (outerW > 0 && outerH > 0)
-	{
-		src.x = 0;
-		src.y = 0;
-		src.w = (int)roundf(outerW * texW);
-		src.h = (int)roundf(outerH * texH);
-		dst = { innerW, innerH, outerW, outerH };
-		SDL_RenderCopy(renderer, mTexture->GetTexture(), &src, &dst);
-	}
-	
-	CComponent::Render(renderer);
-}
-```
-
-^de19b5
-
 ### ScrollEnvObj
 ```cpp
 void CScrollEnvObj::Update(float deltaTime)
@@ -242,14 +163,14 @@ void CMobSpawner::Update(float deltaTime)
 ```cpp
 void CMobSpawner::SpawnMob()
 {
-	// SPAWN REGULAR MOB
+	// 일반 몹 소환
 	if (mRegularSpawnTime <= 0.0f)
 	{
 		mRegularSpawnTime = CONST_REGULAR_MOB_SPAWN_INTERVAL;
 		CEnemy* mob = SpawnRegularMob(mUnlockedRegIdx);
 		mob->GetTransform()->SetWorldPos(GetRandomSpawnPos(1.1f));
 
-		// INDEX CONTROL
+		// 인덱스 관리
 		mRegSpawnAmount--;
 		if (mRegSpawnAmount <= 0)
 		{
@@ -258,14 +179,14 @@ void CMobSpawner::SpawnMob()
 		}
 	}
 
-	// SPAWN SUB BOSS
+	// 중간 보스 소환
 	if (mSubBossSpawnTime <= 0.0f)
 	{
 		mSubBossSpawnTime = CONST_SUBBOSS_MOB_SPAWN_INTERVAL;
 		CEnemy* mob = SpawnSubBossMob(mUnlockedBosIdx);
 		mob->GetTransform()->SetWorldPos(GetRandomSpawnPos(1.1f));
 
-		// INDEX CONTROL
+		// 인덱스 관리
 		mUnlockedBosIdx = std::min(mUnlockedBosIdx + 1, (int)ESubBossMobType::MAX - 1);
 	}
 }

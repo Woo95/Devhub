@@ -1,6 +1,5 @@
 # Media Block References
 ---
-## Eng & Kor
 
 ### GIF
 ![[Tower Defender - Waves of War GamePlay.gif|600]] ^735f14

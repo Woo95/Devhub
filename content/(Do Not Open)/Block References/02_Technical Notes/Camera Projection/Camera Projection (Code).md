@@ -1,6 +1,5 @@
 # Code Block References
 ---
-## Eng & Kor
 
 ### PlayerBehaviour Class - Key Functions
 ```csharp

@@ -1,6 +1,5 @@
 # Media Block References
 ---
-## Eng & Kor
 
 ### GIF
 ![[Italian Brainrot Survivors.gif]] ^b8a5d5

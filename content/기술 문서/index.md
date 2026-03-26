@@ -1,5 +1,5 @@
 ---
-title: 03_기술 문서
+title: 기술 문서
 draft: false
 ---
 

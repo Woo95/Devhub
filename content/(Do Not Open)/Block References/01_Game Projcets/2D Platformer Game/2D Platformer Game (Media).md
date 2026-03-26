@@ -1,6 +1,5 @@
 # Media Block References
 ---
-## Eng & Kor
 
 ### GIF
 ![[2D Platformer Game GamePlay.gif]] ^c8d93c

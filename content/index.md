@@ -3,19 +3,39 @@ title: " "
 draft: false
 ---
 
-# Welcome to My Developer Hub!
-> *A space to document my game projects and technical notes.*  
-> *게임 프로젝트와 기술 노트를 기록하는 공간입니다.*
+# **Hello, World!**
 
-**[ [[English/01_Introduction/index.md|English]] ] / [ [[Korean/01_도입/index.md|한국어]] ]**
+> 저는 **캐나다**에서 유학하며 **컴퓨터과학, 수학, 통계학**을 전공한 뒤, 게임에 대한 관심을 계기로 4학년 시기에 진로를 전환해 게임 프로그래밍을 집중적으로 학습해왔습니다.
+>
+> 게임의 재미는 단순한 기능 구현이 아닌, 플레이 경험에 대한 깊은 이해에서 비롯된다고 생각합니다. eSports 프로팀 전략 분석가로 활동하며 데이터를 분석하고 전략을 개선한 경험을 통해 최적의 의사결정과 예외 상황 대응 능력을 갖추었으며, 다양한 게임에서 최상위권을 기록한 실력을 바탕으로 플레이어가 진정으로 즐길 수 있는 경험을 설계하는 데 강점을 가지고 있습니다.
+>
+> **[\[이력서\]](Chaewan_Woo_Resume_Kor.pdf)** **[\[자소서\]](Chaewan_Woo_Cover_Letter_Kor.pdf)**
 
 ---
-<img src="Minecraft-Like Crafting.gif" width="263" height="188">
-<img src="2D Platformer Game GamePlay.gif" width="263" height="188">
-<img src="Collision System.gif" width="263" height="188">
-<img src="Tower Defender - Waves of War GamePlay.gif" width="263" height="188">
-<img src="D3D12 FlightDemo.gif" width="263" height="188">
-<img src="infinite runners object pooling.gif" width="263" height="188">
-<img src="RealTimeMovement Multiplayer.gif" width="263" height="188">
-<img src="Orthographic Camera-Relative Object Setup.gif" width="263" height="188">
-<img src="UI System.gif" width="263" height="188">
+# **[[게임 프로젝트/index.md|게임 프로젝트]]**
+
+이 섹션은 사용 언어와 도구를 기준으로 정리한 저의 게임 개발 프로젝트를 소개합니다.
+
+| **언어** | **프로젝트 이름**                         | **도구** | **주요 특징**                                                        | **연도** | **기간** |
+| ------ | ----------------------------------- | ------ | ---------------------------------------------------------------- | ------ | ------ |
+| C++    | [[이탈리안 브레인롯 서바이버즈]]                 | SDL2   | [[게임 프로젝트/자작 게임 프레임워크/index.md|자작 게임 프레임워크]], <br>CSV 기반 데이터 관리, <br>스크롤 환경 시스템 | 2025   | 4개월    |
+| C++    | [[게임 프로젝트/자작 게임 프레임워크/index.md|자작 게임 프레임워크]]       | SDL2   | [[메모리 풀 라이브러리]], <br>주요 구현 기능 (문서 참조)                            | 2024   | 8개월    |
+|        |                                     |        |                                                                  |        |        |
+| C#     | [[2D 플랫포머 게임]]                      | Unity  | FSM 기반 게임 흐름 구조, <br>패럴랙스 스크롤링 배경, <br>캐릭터 상호작용 영역들              | 2023   | 1개월    |
+| C#     | [[타워 디펜더 - 전쟁의 파도\|타워 디펜더: 전쟁의 파도]] | Unity  | 랜덤 생성 시스템, <br>유닛 인공지능 (FSM), <br>모바일 카메라 조작                     | 2023   | 2개월    |
+
+---
+# **[[기술 문서/index.md|기술 문서]]**
+이 섹션은 사용 언어와 도구를 기준으로 정리한 저의 기술 노트를 소개합니다.
+
+| **언어** | **프로젝트 이름**           | **도구**  | **주요 특징**                                        | **연도** |
+| ------ | --------------------- | ------- | ------------------------------------------------ | ------ |
+| C++    | [[D3D12 기반 비행 데모]]    | DirectX | 렌더 파이프라인 (CPU 측), <br>씬 스택 관리, <br>[[동작 명령 대기열]] | 2024   |
+| C++    | [[동작 명령 대기열]]         | VS      | 큐 자료구조                                           | 2024   |
+| C++    | [[SharedPtr 라이브러리]]   | VS      | 스마트 포인터, <br>참조 카운팅                              | 2024   |
+| C++    | [[메모리 풀 라이브러리]]       | VS      | 메모리 관리, <br>[[SharedPtr 라이브러리]]                  | 2024   |
+|        |                       |         |                                                  |        |
+| C#     | [[오브젝트 풀링]]           | Unity   | 생성 비용 최소화, <br>성능 최적화                            | 2023   |
+| C#     | [[카메라 투영]]            | Unity   | 직교 카메라 기반 오브젝트 배치                                | 2023   |
+| C#     | [[마인크래프트 스타일 제작 시스템]] | Unity   | 간단한 레시피 설정, <br>유연한 제작 알고리즘                      | 2023   |
+| C#     | [[실시간 이동 네트워크]]       | Unity   | 네트워크, <br>멀티플레이                                  | 2023   |

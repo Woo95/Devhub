@@ -1,7 +1,5 @@
 # Code Block References
 ---
-## Eng & Kor
-
 ### Server Side
 #### GameLogic.cs
 ```csharp
@@ -84,40 +82,6 @@ static public class NetworkServerProcessing
 
 ^d082db
 
-##### Eng
-```csharp
-static public void ReceivedMessageFromClient(string msg, int clientConnectionID, TransportPipeline pipeline)
-{
-    string[] csv = msg.Split(',');
-    int signifier = int.Parse(csv[0]);
-    
-    switch (signifier)
-    {
-		case ClientToServerSignifiers.PTC_PLAYER_MOVE:
-		{
-		    string seed = csv[1];
-		    string posX = csv[2], posY = csv[3], posZ = csv[4];
-		
-		    // Update server-side position data
-		    gameLogic.Search(int.Parse(seed))?.SetData(posX, posY, posZ);
-		
-		    // Forward updated position to all connected clients
-		    string msgOut = $"{ServerToClientSignifiers.PTS_PLAYER_MOVE},{seed},{posX},{posY},{posZ}";
-		    foreach (PlayerData data in gameLogic.m_ConnectedPlayers)
-		        SendMessageToClient(msgOut, data.m_ClientConnectionID, TransportPipeline.ReliableAndInOrder);
-		}
-		break;
-		
-		case ClientToServerSignifiers.PTC_PLAYER_MOVE2:
-			// [Omitted] Input-based version of the above
-			break;
-	}
-}
-```
-
-^e38f3b
-
-##### Kor
 ```csharp
 static public void ReceivedMessageFromClient(string msg, int clientConnectionID, TransportPipeline pipeline)
 {
@@ -265,40 +229,6 @@ static public class NetworkClientProcessing
 
 ^ac80a7
 
-##### Eng
-```csharp
-static public void ReceivedMessageFromServer(string msg, TransportPipeline pipeline)
-{
-	string[] csv = msg.Split(',');
-	int signifier = int.Parse(csv[0]);
-
-	switch (signifier)
-	{
-		case ServerToClientSignifiers.PTS_CONNECTED_NEW_PLAYER:
-			// [Omitted] Initialize and spawn the local player
-			break;
-		case ServerToClientSignifiers.PTS_CONNECTED_NEW_PLAYER_RECEIVE_DATA:
-			// [Omitted] Receive and spawn existing players from server
-			break;
-		case ServerToClientSignifiers.PTS_CONNECTED_PLAYERS_RECEIVE_NEW_PLAYER_DATA:
-			// [Omitted] Spawn newly joined remote player on other clients
-			break;
-		case ServerToClientSignifiers.PTS_PLAYER_MOVE:
-			// [Omitted] Update remote player's position (Type A)
-			break;
-		case ServerToClientSignifiers.PTS_PLAYER_MOVE2:
-			// [Omitted] Update remote player's position & input (Type B)
-			break;
-		case ServerToClientSignifiers.PTS_PLAYER_LEFT:
-			// [Omitted] Remove disconnected player from scene
-			break;
-	}
-}
-```
-
-^c3ff2f
-
-##### Kor
 ```csharp
 static public void ReceivedMessageFromServer(string msg, TransportPipeline pipeline)
 {

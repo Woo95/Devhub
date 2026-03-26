@@ -1,70 +1,6 @@
 # Code Block References
 ---
-## Definitions (Eng)
-```
-Constant Buffer View (CBV):
-	A GPU-accessible view that allows shaders to read constant uniform data such as transformation matrices, lighting parameters, or camera position.
-```
 
-^1ee3b0
-
-```
-Shader Resource View (SRV):
-	A descriptor that allows shaders to access various GPU resources like textures or structured buffers during rendering.
-```
-
-^c55cc0
-
-```
-Unordered Access View (UAV):
-	A descriptor that allows shaders to read from and write to a resource (such as a texture or buffer) in arbitrary order, without the restrictions of constant or shader resource views.
-```
-
-^2dd457
-
-```
-Sampler: 
-	A descriptor that defines how a texture is sampled, including filtering methods and address modes (e.g., wrap, clamp).
-```
-
-^801570
-
-```
-HLSL (High-Level Shader Language):
-	A shader programming language developed by Microsoft, used to write GPU programs for the Direct3D rendering pipeline.
-```
-
-^e6dd51
-
-```
-Vertex Shader (VS):
-	A programmable stage in the graphics pipeline that transforms vertex data (position, normals, etc.) from model space to clip space.
-```
-
-^c15357
-
-```
-Pixel Shader (PS):
-	A programmable stage that determines the final color of each pixel rendered to the screen, often using texture data and lighting calculations.
-```
-
-^b15a68
-
-```
-Constant Buffer:
-	Holds dynamic data like matrices or lighting per frame (accessed via CBVs).
-```
-
-^f5f00b
-
-```
-Command Allocator:
-	Manages the memory for recording GPU commands during one frame.
-```
-
-^c80301
-
----
 ## Definitions (Kor)
 ```
 상수 버퍼 뷰(Constant Buffer View):
@@ -131,37 +67,6 @@ Command Allocator:
 
 ---
 ## Code
-### Setup (Eng)
-```cpp
-bool Game::Initialize()
-{
-    // 1. Device Initialization
-    if (!D3DApp::Initialize()) 
-	    return false;   
-        
-	// 2. Graphics Pipeline Configuration
-	BuildRootSignature();
-	BuildShadersAndInputLayout();
-	BuildPSOs();
-
-	// 3. Resource Asset Setup
-	LoadTextures();
-	BuildMaterials();
-	BuildDescriptorHeaps();
-
-	// 4. Geometry and Vertex Buffer Setup
-	BuildShapeGeometry();
-
-	// 5. Frame Resources Setup
-	BuildFrameResources();
-    
-    /* Other code omitted for clarity */
-    
-    return true;
-}
-```
-
-^db2b1a
 
 ### Setup (Kor)
 ```cpp
@@ -196,46 +101,6 @@ bool Game::Initialize()
 ^f262f3
 
 ---
-### Stage 1 (Eng)
-```cpp
-bool D3DApp::Initialize()
-{
-	// Create and initialize the main window
-	if(!InitMainWindow())
-		return false;
-
-	// Initialize Direct3D device and related resources
-	if(!InitDirect3D())
-		return false;
-
-    // Setup swap chain, viewport, and depth buffer based on window size
-    OnResize();
-
-	return true;
-}
-```
-
-^cdc89e
-
-```cpp
-bool D3DApp::InitDirect3D()
-{
-	/* Other initialization omitted */
-
-	// Create command queue, allocator, and command list for GPU commands
-	CreateCommandObjects();
-
-	// Create the swap chain for presenting rendered frames to the screen
-	CreateSwapChain();
-
-	// Create descriptor heaps (memory areas) for screen images (RTV) and depth info (DSV)
-	CreateRtvAndDsvDescriptorHeaps();
-
-	return true;
-}
-```
-
-^771272
 
 ### Stage 1 (Kor)
 ```cpp

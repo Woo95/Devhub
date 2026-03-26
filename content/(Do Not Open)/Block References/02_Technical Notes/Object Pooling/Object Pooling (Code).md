@@ -1,7 +1,5 @@
 # Code Block References
 ---
-## Eng & Kor
-
 ### MapGenerator Class - Key Variables
 ```csharp
 public class MapGenerator : MonoBehaviour

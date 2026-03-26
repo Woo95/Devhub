@@ -1,6 +1,5 @@
 # Code Block References
 ---
-## Eng & Kor
 
 ### Spawner
 ```csharp

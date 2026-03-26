@@ -1,6 +1,5 @@
 # Code Block References
 ---
-## Eng & Kor
 
 ### From CRefCounter Class
 ```cpp
@@ -86,30 +85,6 @@ void operator = (const CSharedPtr<T>& other)
 ^9a7d66
 
 ---
-## Eng
-
-### Example
-
-```cpp
-int main()
-{
-	// create CObject
-	CObject* obj = new CObject;
-
-	CSharedPtr<CObject> sharedPtr1 = obj; // refCount: 1
-	CSharedPtr<CObject> sharedPtr2 = obj; // refCount: 2
-
-	sharedPtr1 = nullptr; // refCount: 1
-	sharedPtr2 = nullptr; // refCount: 0, delete CObject
-
-	return 0;
-}
-```
-
-^787350
-
----
-## Kor
 
 ### Example
 

@@ -1,6 +1,5 @@
 # Minecraft-Like Crafting System Block References
 ---
-## Eng & Kor
 
 ### eItemType Enum
 ```csharp
@@ -85,33 +84,6 @@ public class ItemInstance : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 ^c6f0e7
 
 ### ItemSlot Related Classes
-#### Eng
-```csharp
-public class ItemSlot : MonoBehaviour, IPointerClickHandler
-{
-	/*
-	OnPointerClick Event Functions:
-		- Handles item interactions.
-		- Types:
-			- PickItem
-			- PlaceItem
-			- SwapItem
-			- PickHalfOfItem
-	*/
-	/* 
-	OnPointerClick Condition Functions:
-		- Checks various slot and cursor states.
-		- Types:
-			- ItemOnSlotAndCursor
-			- ItemOnSlotAndNoCursor
-			- SlotAndCursorSameItem
-	*/
-}
-```
-
-^db1b81
-
-#### Kor
 ```csharp
 public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
@@ -137,7 +109,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
 ^6bfaef
 
-#### Eng & Kor
 ```csharp
 public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
